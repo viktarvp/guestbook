@@ -1,0 +1,5 @@
+{
+  "port": 5000,
+  "mongoUri": "mongodb+srv://viktar:ViktarPiatrou@cluster0.lnamk.mongodb.net/guest-book?retryWrites=true&w=majority",
+  "baseUrl": "http://localhost:5000"
+}
