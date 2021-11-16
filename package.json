@@ -8,7 +8,8 @@
     "server": "nodemon app.js",
     "start": "node app.js",
     "client": "npm run start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [
     "mern",
@@ -16,7 +17,6 @@
   ],
   "author": "Viktar Piatrou <viktar.vp@gmail.com>",
   "license": "ISC",
-  "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
   "dependencies": {
     "body-parser": "^1.19.0",
     "config": "^3.3.6",
