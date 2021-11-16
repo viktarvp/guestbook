@@ -18,7 +18,7 @@ router.post(
   [check('name', 'Incorrect name').isAlpha()],
   async (req, res) => {
     try {
-      const baseUrl = config.baseUrl;
+      const baseUrl = config.get('baseUrl');
 
       const errors = validationResult(req);
       if (!errors.isEmpty()) {

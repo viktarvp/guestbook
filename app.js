@@ -8,11 +8,11 @@ app.use(express.json({ extended: true }));
 
 app.use('/api', require('./routes/comment.routes'));
 
-const PORT = config.port || 5000;
+const PORT = config.get('port') || 5000;
 
 async function start() {
   try {
-    await mongoose.connect(config.mongoUri, {
+    await mongoose.connect(config.get('mongoUri'), {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
