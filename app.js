@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', function (req, res) {
     // const index = path.join(__dirname, 'build', 'index.html');
     // res.sendFile(index);
-    res.sendfile('./main.html');
+    res.sendFile('./main.html');
   });
 }
 
