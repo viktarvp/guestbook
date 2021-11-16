@@ -10,11 +10,11 @@ app.use(express.json({ extended: true }));
 app.use('/api', require('./routes/comment.routes'));
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '..', 'build')));
+  app.use(express.static(path.join(__dirname, '../client/build')));
   app.use(express.static('public'));
 
   app.use((req, res, next) => {
-    res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
   });
 }
 
