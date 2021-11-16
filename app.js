@@ -10,11 +10,7 @@ app.use(express.json({ extended: true }));
 app.use('/api', require('./routes/comment.routes'));
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'front_end', 'build')));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'front_end', 'build', 'index.html'));
-  });
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 }
 
 const PORT = process.env.PORT || config.get('port') || 5000;
