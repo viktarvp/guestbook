@@ -35,8 +35,6 @@ function InputForm(props) {
       errors.description = 'Invalid description';
     }
 
-    console.log('errors:', errors.name, errors.description);
-
     if (errors.name || errors.description) {
       setErrors(errors);
       setValidated(false);
