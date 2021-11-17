@@ -3,44 +3,42 @@ import useHttp from '../hooks/http.hook';
 import { Form, Button } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import CommentsList from './CommentsList';
+import './inputForm.css';
 
 function InputForm(props) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [validated, setValidated] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errorName, setErrorName] = useState('');
+  const [errorDescription, setErrorDescription] = useState('');
   const { loading, request } = useHttp();
 
   const handleName = async (e) => {
     setName(e.target.value);
-    setErrors({});
+    setErrorName('');
   };
 
   const handleDescription = async (e) => {
     setDescription(e.target.value);
-    setErrors({});
+    setErrorDescription('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const errors = {};
-    setErrors(errors);
-
     const regex = /^[a-zA-Z0-9_ .-]*$/;
     if (!name.match(regex) || name.trim() === '') {
-      errors.name = 'Invalid name';
+      setErrorName('Invalid name');
     }
     if (!description.match(regex) || description.trim() === '') {
-      errors.description = 'Invalid description';
+      setErrorDescription('Invalid description');
     }
 
-    if (errors.name || errors.description) {
-      setErrors(errors);
+    if (errorName || errorDescription) {
       setValidated(false);
     } else {
       setValidated(true);
-      createComment();
+      await createComment();
     }
   };
 
@@ -59,17 +57,21 @@ function InputForm(props) {
     <>
       <Form className="my-5" validated={validated} onSubmit={handleSubmit}>
         <Form.Label>Leave you comment</Form.Label>
-        <Form.Group className="mb-3" controlId="formBasicName">
+        <Form.Group className="mb-5" controlId="formBasicName">
           <Form.Control
             type="text"
             placeholder="Name"
             inputRef={name}
             onChange={handleName}
-            isInvalid={!!errors.name}
+            isInvalid={!!errorName}
           />
-          {errors.name && <Alert variant="danger">{errors.name}</Alert>}
+          {errorName && (
+            <Alert variant="danger" className="alert">
+              {errorName}
+            </Alert>
+          )}
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicDescription">
+        <Form.Group className="mb-5" controlId="formBasicDescription">
           <Form.Control
             as="textarea"
             placeholder="Description"
@@ -77,8 +79,8 @@ function InputForm(props) {
             value={description}
             onChange={handleDescription}
           />
-          {errors.description && (
-            <Alert variant="danger">{errors.description}</Alert>
+          {errorDescription && (
+            <Alert variant="danger">{errorDescription}</Alert>
           )}
         </Form.Group>
         <Button
