@@ -3,7 +3,6 @@ import useHttp from '../hooks/http.hook';
 import { Form, Button } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import CommentsList from './CommentsList';
-import './inputForm.css';
 
 function InputForm(props) {
   const [name, setName] = useState('');
@@ -11,7 +10,7 @@ function InputForm(props) {
   const [validated, setValidated] = useState(false);
   const [errorName, setErrorName] = useState('');
   const [errorDescription, setErrorDescription] = useState('');
-  const { loading, request } = useHttp();
+  const { loading, request, error } = useHttp();
 
   const handleName = async (e) => {
     setName(e.target.value);
@@ -84,7 +83,6 @@ function InputForm(props) {
           )}
         </Form.Group>
         <Button
-          id="btn"
           variant="primary"
           type="submit"
           value="Submit"
@@ -92,8 +90,9 @@ function InputForm(props) {
         >
           Submit
         </Button>
-        {!loading && <CommentsList />}
+        {/* {error && <Alert variant="danger">{error}</Alert>} */}
       </Form>
+      {!loading && <CommentsList />}
     </>
   );
 }

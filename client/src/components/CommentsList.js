@@ -20,7 +20,7 @@ function CommentsList() {
   if (loading) {
     return (
       <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
+        <span class="sr-only"></span>
       </div>
     );
   }
