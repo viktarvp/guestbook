@@ -27,7 +27,7 @@ function InputForm(props) {
     const errors = {};
     setErrors(errors);
 
-    const regex = /^[a-zA-Z0-9_.-]*$/;
+    const regex = /^[a-zA-Z0-9_ .-]*$/;
     if (!name.match(regex) || name.trim() === '') {
       errors.name = 'Invalid name';
     }
