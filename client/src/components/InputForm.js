@@ -1,32 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import useHttp from '../hooks/http.hook';
 import { Form, Button } from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert';
 import CommentsList from './CommentsList';
 
 function InputForm(props) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [isNameValid, setIsNameValid] = useState(true);
+  const [validated, setValidated] = useState(false);
+  const [errors, setErrors] = useState({});
   const { loading, request } = useHttp();
 
-  useEffect(() => {
-    if (name.trim() === '') {
-      return `${name} is required`;
+  const handleName = async (e) => {
+    setName(e.target.value);
+    setErrors({});
+  };
+
+  const handleDescription = async (e) => {
+    setDescription(e.target.value);
+    setErrors({});
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const errors = {};
+    setErrors(errors);
+
+    const regex = /^[a-zA-Z0-9_.-]*$/;
+    if (!name.match(regex) || name.trim() === '') {
+      errors.name = 'Invalid name';
+    }
+    if (!description.match(regex) || description.trim() === '') {
+      errors.description = 'Invalid description';
     }
 
-    // if (name !== '') {
-    //   if (name.match(/[a-zA-Z_]/)) {
-    //     setIsNameValid(false);
-    //     console.log('isNameValid1', name, isNameValid);
-    //   } else {
-    //     setIsNameValid(true);
-    //     console.log('isNameValid2', name, isNameValid);
-    //   }
-    // } else {
-    //   setIsNameValid(false);
-    //   console.log('isNameValid1', name, isNameValid);
-    // }
-  }, [name, isNameValid]);
+    console.log('errors:', errors.name, errors.description);
+
+    if (errors.name || errors.description) {
+      setErrors(errors);
+      setValidated(false);
+    } else {
+      setValidated(true);
+      createComment();
+    }
+  };
 
   const createComment = async () => {
     try {
@@ -35,20 +53,23 @@ function InputForm(props) {
         description,
         date: Date.now(),
       });
+      setDescription('');
     } catch (e) {}
   };
 
   return (
     <>
-      <Form className="my-5">
+      <Form className="my-5" validated={validated} onSubmit={handleSubmit}>
         <Form.Label>Leave you comment</Form.Label>
         <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Control
             type="text"
             placeholder="Name"
             inputRef={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleName}
+            isInvalid={!!errors.name}
           />
+          {errors.name && <Alert variant="danger">{errors.name}</Alert>}
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicDescription">
           <Form.Control
@@ -56,16 +77,17 @@ function InputForm(props) {
             placeholder="Description"
             rows={3}
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={handleDescription}
           />
+          {errors.description && (
+            <Alert variant="danger">{errors.description}</Alert>
+          )}
         </Form.Group>
         <Button
+          id="btn"
           variant="primary"
           type="submit"
           value="Submit"
-          onClick={() => {
-            createComment();
-          }}
           disabled={loading}
         >
           Submit

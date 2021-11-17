@@ -31,7 +31,7 @@ function CommentsList() {
         comments.map((post, index) => {
           return (
             <ListGroup.Item>
-              {index + 1}. {post.description} | {post.name}
+              {index + 1}. {post.name} | {post.description}
             </ListGroup.Item>
           );
         })}
