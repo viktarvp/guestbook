@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import useHttp from '../hooks/http.hook';
-import { Form, Button } from 'react-bootstrap';
-import Alert from 'react-bootstrap/Alert';
+import { Form, Button, ToastContainer, Toast } from 'react-bootstrap';
 import CommentsList from './CommentsList';
 
 function InputForm(props) {
@@ -10,16 +9,18 @@ function InputForm(props) {
   const [validated, setValidated] = useState(false);
   const [errorName, setErrorName] = useState('');
   const [errorDescription, setErrorDescription] = useState('');
-  const { loading, request, error } = useHttp();
+  const { loading, request, message, clearMessage } = useHttp();
 
   const handleName = async (e) => {
     setName(e.target.value);
     setErrorName('');
+    clearMessage('');
   };
 
   const handleDescription = async (e) => {
     setDescription(e.target.value);
     setErrorDescription('');
+    clearMessage('');
   };
 
   const handleSubmit = async (e) => {
@@ -56,7 +57,7 @@ function InputForm(props) {
     <>
       <Form className="my-5" validated={validated} onSubmit={handleSubmit}>
         <Form.Label>Leave you comment</Form.Label>
-        <Form.Group className="mb-5" controlId="formBasicName">
+        <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Control
             type="text"
             placeholder="Name"
@@ -65,12 +66,14 @@ function InputForm(props) {
             isInvalid={!!errorName}
           />
           {errorName && (
-            <Alert variant="danger" className="alert">
-              {errorName}
-            </Alert>
+            <ToastContainer position="top-end">
+              <Toast show={errorName}>
+                <Toast.Body> {errorName}</Toast.Body>
+              </Toast>
+            </ToastContainer>
           )}
         </Form.Group>
-        <Form.Group className="mb-5" controlId="formBasicDescription">
+        <Form.Group className="mb-3" controlId="formBasicDescription">
           <Form.Control
             as="textarea"
             placeholder="Description"
@@ -79,7 +82,11 @@ function InputForm(props) {
             onChange={handleDescription}
           />
           {errorDescription && (
-            <Alert variant="danger">{errorDescription}</Alert>
+            <ToastContainer position="top-end">
+              <Toast show={errorDescription}>
+                <Toast.Body> {errorDescription}</Toast.Body>
+              </Toast>
+            </ToastContainer>
           )}
         </Form.Group>
         <Button
@@ -90,7 +97,13 @@ function InputForm(props) {
         >
           Submit
         </Button>
-        {/* {error && <Alert variant="danger">{error}</Alert>} */}
+        {message && (
+          <ToastContainer position="top-end">
+            <Toast show={message} delay={3000} autohide>
+              <Toast.Body>{message}</Toast.Body>
+            </Toast>
+          </ToastContainer>
+        )}
       </Form>
       {!loading && <CommentsList />}
     </>
