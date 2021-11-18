@@ -26,19 +26,22 @@ function InputForm(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const regex = /^[a-zA-Z0-9_ .-]*$/;
-    if (!name.match(regex) || name.trim() === '') {
+    const regex = /^[\w\d\s_]+$/;
+    const isNameCorrect = name.match(regex) && name.trim() !== '';
+    if (!isNameCorrect) {
       setErrorName('Invalid name');
     }
-    if (!description.match(regex) || description.trim() === '') {
+    const isDescriptionCorrect =
+      description.match(regex) && description.trim() !== '';
+    if (!isDescriptionCorrect) {
       setErrorDescription('Invalid description');
     }
 
-    if (errorName || errorDescription) {
-      setValidated(false);
-    } else {
+    if (isNameCorrect && isDescriptionCorrect) {
       setValidated(true);
       await createComment();
+    } else {
+      setValidated(false);
     }
   };
 
