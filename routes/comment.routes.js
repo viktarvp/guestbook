@@ -14,11 +14,9 @@ router.get(`/comment`, async (req, res) => {
 
 router.post(`/comment`, async (req, res) => {
   try {
-    const baseUrl = config.get('baseUrl');
-
     const { name, description, date } = req.body;
-
     const comment = new Comment({ name, description, date });
+
     await comment.save();
     res.status(201).json({ message: 'comment saved' });
   } catch (e) {

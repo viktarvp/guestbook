@@ -1,8 +1,6 @@
-require('dotenv').config();
 const express = require('express');
-const config = require('config');
-const mongoose = require('mongoose');
 const app = express();
+const mongoose = require('mongoose');
 const path = require('path');
 
 app.use(express.json({ extended: true }));
@@ -20,7 +18,7 @@ const PORT = process.env.PORT || process.env.APP_PORT || 5000;
 
 async function start() {
   try {
-    await mongoose.connect(config.get('mongoUri'), {
+    await mongoose.connect(process.env.APP_DB, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
