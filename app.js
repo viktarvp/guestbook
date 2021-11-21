@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const path = require('path');
+require('dotenv').config();
 
 app.use(express.json({ extended: true }));
 
@@ -14,7 +15,7 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
-const PORT = process.env.PORT || process.env.APP_PORT || 5000;
+const PORT = process.env.PORT || process.env.APP_PORT;
 
 async function start() {
   try {

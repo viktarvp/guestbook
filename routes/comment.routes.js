@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const config = require('config');
 const Comment = require('../models/Comment');
 const router = new Router();
 
