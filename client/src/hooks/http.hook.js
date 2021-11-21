@@ -33,7 +33,7 @@ const useHttp = () => {
     []
   );
 
-  const clearMessage = () => setMessage(null);
+  const clearMessage = (timeout) => setTimeout(() => setMessage(null), timeout);
 
   return { loading, request, message, clearMessage };
 };

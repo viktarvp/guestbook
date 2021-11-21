@@ -28,10 +28,10 @@ function CommentsList() {
   return (
     <ListGroup variant="flush">
       {!loading &&
-        comments.map((post, index) => {
+        comments.map((post) => {
           return (
             <ListGroup.Item>
-              {index + 1}. {post.name} | {post.description}
+              {post.name} | {post.description}
             </ListGroup.Item>
           );
         })}

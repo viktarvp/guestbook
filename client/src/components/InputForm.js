@@ -14,19 +14,17 @@ function InputForm(props) {
   const handleName = async (e) => {
     setName(e.target.value);
     setErrorName('');
-    clearMessage('');
   };
 
   const handleDescription = async (e) => {
     setDescription(e.target.value);
     setErrorDescription('');
-    clearMessage('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const regex = /^[\w\d\s_]+$/;
+    const regex = /^[\w\d\s_?!.,:;]+$/;
     const isNameCorrect = name.match(regex) && name.trim() !== '';
     if (!isNameCorrect) {
       setErrorName('Invalid name');
@@ -53,6 +51,8 @@ function InputForm(props) {
         date: Date.now(),
       });
       setDescription('');
+      setValidated(false);
+      clearMessage(3000);
     } catch (e) {}
   };
 

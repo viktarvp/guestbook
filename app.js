@@ -1,9 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const config = require('config');
 const mongoose = require('mongoose');
-const path = require('path');
-
 const app = express();
+const path = require('path');
 
 app.use(express.json({ extended: true }));
 
@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
-const PORT = process.env.PORT || config.get('port') || 5000;
+const PORT = process.env.PORT || process.env.APP_PORT || 5000;
 
 async function start() {
   try {
