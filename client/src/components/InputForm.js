@@ -11,14 +11,19 @@ function InputForm(props) {
   const [errorDescription, setErrorDescription] = useState('');
   const { loading, request, message, clearMessage } = useHttp();
 
-  const handleName = async (e) => {
-    setName(e.target.value);
-    setErrorName('');
-  };
-
-  const handleDescription = async (e) => {
-    setDescription(e.target.value);
-    setErrorDescription('');
+  const handleInput = async (name, e) => {
+    switch (name) {
+      case 'name':
+        setName(e.target.value);
+        setErrorName('');
+        break;
+      case 'description':
+        setDescription(e.target.value);
+        setErrorDescription('');
+        break;
+      default: {
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -65,7 +70,7 @@ function InputForm(props) {
             type="text"
             placeholder="Name"
             inputRef={name}
-            onChange={handleName}
+            onChange={(e) => handleInput('name', e)}
             isInvalid={!!errorName}
           />
           {errorName && (
@@ -82,7 +87,7 @@ function InputForm(props) {
             placeholder="Description"
             rows={3}
             value={description}
-            onChange={handleDescription}
+            onChange={(e) => handleInput('description', e)}
           />
           {errorDescription && (
             <ToastContainer position="top-end">
