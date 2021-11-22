@@ -4,41 +4,32 @@ import { Form, Button, ToastContainer, Toast } from 'react-bootstrap';
 import CommentsList from './CommentsList';
 
 function InputForm(props) {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const fieldsStricture = { name: '', description: '' };
+  const [inputs, setInputs] = useState(fieldsStricture);
+  const [errors, setErrors] = useState(fieldsStricture);
   const [validated, setValidated] = useState(false);
-  const [errorName, setErrorName] = useState('');
-  const [errorDescription, setErrorDescription] = useState('');
   const { loading, request, message, clearMessage } = useHttp();
 
-  const handleInput = async (name, e) => {
-    switch (name) {
-      case 'name':
-        setName(e.target.value);
-        setErrorName('');
-        break;
-      case 'description':
-        setDescription(e.target.value);
-        setErrorDescription('');
-        break;
-      default: {
-      }
-    }
+  const handleInput = async (e) => {
+    const { name, value } = e.target;
+    setInputs({ ...inputs, [name]: value });
+    setErrors({ ...errors, [name]: '' });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const regex = /^[\w\d\s_?!.,:;]+$/;
-    const isNameCorrect = name.match(regex) && name.trim() !== '';
+    const isNameCorrect = inputs.name.match(regex) && inputs.name.trim() !== '';
     if (!isNameCorrect) {
-      setErrorName('Invalid name');
+      fieldsStricture.name = 'Invalid name';
     }
     const isDescriptionCorrect =
-      description.match(regex) && description.trim() !== '';
+      inputs.description.match(regex) && inputs.description.trim() !== '';
     if (!isDescriptionCorrect) {
-      setErrorDescription('Invalid description');
+      fieldsStricture.description = 'Invalid description';
     }
+    setErrors(fieldsStricture);
 
     if (isNameCorrect && isDescriptionCorrect) {
       setValidated(true);
@@ -49,13 +40,14 @@ function InputForm(props) {
   };
 
   const createComment = async () => {
+    const { name, description } = inputs;
     try {
       await request('api/comment', 'POST', {
         name,
         description,
         date: Date.now(),
       });
-      setDescription('');
+      setInputs({ ...inputs, description: '' });
       setValidated(false);
       clearMessage(3000);
     } catch (e) {}
@@ -69,14 +61,15 @@ function InputForm(props) {
           <Form.Control
             type="text"
             placeholder="Name"
-            inputRef={name}
-            onChange={(e) => handleInput('name', e)}
-            isInvalid={!!errorName}
+            name="name"
+            value={inputs.name}
+            onChange={(e) => handleInput(e)}
+            isInvalid={!!errors.name}
           />
-          {errorName && (
+          {errors.name && (
             <ToastContainer position="top-end">
-              <Toast show={errorName}>
-                <Toast.Body> {errorName}</Toast.Body>
+              <Toast show={errors.name}>
+                <Toast.Body> {errors.name}</Toast.Body>
               </Toast>
             </ToastContainer>
           )}
@@ -86,13 +79,14 @@ function InputForm(props) {
             as="textarea"
             placeholder="Description"
             rows={3}
-            value={description}
-            onChange={(e) => handleInput('description', e)}
+            name="description"
+            value={inputs.description}
+            onChange={(e) => handleInput(e)}
           />
-          {errorDescription && (
+          {errors.description && (
             <ToastContainer position="top-end">
-              <Toast show={errorDescription}>
-                <Toast.Body> {errorDescription}</Toast.Body>
+              <Toast show={errors.description}>
+                <Toast.Body> {errors.description}</Toast.Body>
               </Toast>
             </ToastContainer>
           )}
