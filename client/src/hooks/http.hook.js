@@ -21,7 +21,7 @@ const useHttp = () => {
         }
 
         setLoading(false);
-        setMessage('Saved');
+        setMessage(data.message);
 
         return data;
       } catch (e) {

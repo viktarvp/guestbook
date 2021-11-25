@@ -1,4 +1,4 @@
-import InputForm from './components/InputForm';
+import InputComment from './components/InputComment';
 import { Container, Row, Col } from 'react-bootstrap';
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
           <Col></Col>
           <Col xs={6}>
             <h1 class="text-center">Guest book</h1>
-            <InputForm />
+            <InputComment />
           </Col>
           <Col></Col>
         </Row>

@@ -7,7 +7,7 @@ router.get(`/comment`, async (req, res) => {
     const comments = await Comment.find().sort({ date: -1 });
     return res.status(200).send(comments);
   } catch (e) {
-    res.status(500).json({ message: 'something went wrong' });
+    res.status(500).json({ message: 'Something went wrong' });
   }
 });
 
@@ -17,9 +17,9 @@ router.post(`/comment`, async (req, res) => {
     const comment = new Comment({ name, description, date });
 
     await comment.save();
-    res.status(201).json({ message: 'comment saved' });
+    res.status(201).json({ message: 'Comment saved' });
   } catch (e) {
-    res.status(500).json({ message: e });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

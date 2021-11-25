@@ -3,10 +3,10 @@ import useHttp from '../hooks/http.hook';
 import { Form, Button, ToastContainer, Toast } from 'react-bootstrap';
 import CommentsList from './CommentsList';
 
-function InputForm(props) {
-  const fieldsStricture = { name: '', description: '' };
-  const [inputs, setInputs] = useState(fieldsStricture);
-  const [errors, setErrors] = useState(fieldsStricture);
+function InputComment(props) {
+  const fieldStricture = { name: '', description: '' };
+  const [inputs, setInputs] = useState(fieldStricture);
+  const [errors, setErrors] = useState(fieldStricture);
   const [validated, setValidated] = useState(false);
   const { loading, request, message, clearMessage } = useHttp();
 
@@ -22,14 +22,13 @@ function InputForm(props) {
     const regex = /^[\w\d\s_?!.,:;]+$/;
     const isNameCorrect = inputs.name.match(regex) && inputs.name.trim() !== '';
     if (!isNameCorrect) {
-      fieldsStricture.name = 'Invalid name';
+      fieldStricture.name = 'Invalid name';
     }
     const isDescriptionCorrect =
       inputs.description.match(regex) && inputs.description.trim() !== '';
     if (!isDescriptionCorrect) {
-      fieldsStricture.description = 'Invalid description';
+      fieldStricture.description = 'Invalid description';
     }
-    setErrors(fieldsStricture);
 
     if (isNameCorrect && isDescriptionCorrect) {
       setValidated(true);
@@ -41,16 +40,14 @@ function InputForm(props) {
 
   const createComment = async () => {
     const { name, description } = inputs;
-    try {
-      await request('api/comment', 'POST', {
-        name,
-        description,
-        date: Date.now(),
-      });
-      setInputs({ ...inputs, description: '' });
-      setValidated(false);
-      clearMessage(3000);
-    } catch (e) {}
+    await request('api/comment', 'POST', {
+      name,
+      description,
+      date: Date.now(),
+    });
+    setInputs({ ...inputs, description: '' });
+    setValidated(false);
+    clearMessage(3000);
   };
 
   return (
@@ -112,4 +109,4 @@ function InputForm(props) {
   );
 }
 
-export default InputForm;
+export default InputComment;
